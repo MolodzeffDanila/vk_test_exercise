@@ -1,0 +1,20 @@
+.header{
+    background-color: #bbbbbb;
+    border: 4mm ridge rgba(200, 200, 200, 0.6);
+}
+.mines{
+    margin-left: 1vh;
+    margin-top: 2vh;
+    text-align: left;
+}
+
+.smile{
+    text-align: center;
+    margin-top: 2vh;
+}
+
+.timer{
+    text-align: right;
+    margin-top: 2vh;
+    margin-right: 1vh;
+}
