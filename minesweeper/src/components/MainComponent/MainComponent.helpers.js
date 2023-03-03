@@ -15,3 +15,38 @@ export const startField = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ]
+
+export function generateBombs(mines){
+    let field = startField
+
+    function inc(x, y) {
+        if (x >= 0 && x < 16 && y >= 0 && y < 16) {
+            if (field[y][x] === -1) return;
+
+            field[y][x] += 1;
+        }
+    }
+
+    let i = 0;
+    while(i<mines){
+        const x = Math.floor(Math.random() * 16);
+        const y = Math.floor(Math.random() * 16);
+
+        if (field[y][x] === -1) continue;
+
+        field[y][x] = -1;
+
+        i += 1;
+
+        inc(x + 1, y);
+        inc(x - 1, y);
+        inc(x, y + 1);
+        inc(x, y - 1);
+        inc(x + 1, y - 1);
+        inc(x - 1, y - 1);
+        inc(x + 1, y + 1);
+        inc(x - 1, y + 1);
+    }
+
+    return field;
+}

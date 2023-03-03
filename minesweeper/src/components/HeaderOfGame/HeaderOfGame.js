@@ -15,10 +15,9 @@ import num_9_mines_left from  "../../sprites/num_9_mines_left.png"
 import smileTouched from "../../sprites/smile_touched.png"
 import smile from "../../sprites/smile.png"
 
-function HeaderOfGame({clearField}){
+function HeaderOfGame(){
 
     const restartGame = (event) =>{
-        clearField()
         event.target.src = smileTouched
         setTimeout(()=>{
             event.target.src = smile
