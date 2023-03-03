@@ -1,4 +1,5 @@
 import {Grid} from '@mui/material';
+import ClickNHold from 'react-click-n-hold';
 import "./HeaderOfGame.css"
 import num_0_mines_left from  "../../sprites/num_0_mines_left.png"
 import num_1_mines_left from  "../../sprites/num_1_mines_left.png"
@@ -11,23 +12,32 @@ import num_7_mines_left from  "../../sprites/num_7_mines_left.png"
 import num_8_mines_left from  "../../sprites/num_8_mines_left.png"
 import num_9_mines_left from  "../../sprites/num_9_mines_left.png"
 
-
+import smileTouched from "../../sprites/smile_touched.png"
 import smile from "../../sprites/smile.png"
 
-function HeaderOfGame(){
+function HeaderOfGame({clearField}){
+
+    const restartGame = (event) =>{
+        clearField()
+        event.target.src = smileTouched
+        setTimeout(()=>{
+            event.target.src = smile
+        },100)
+    }
+
     return (
     <div className="header">
         <Grid container spacing={5}>
             <Grid item xs={4}>
                 <div className="mines">
                     <img src={num_0_mines_left}></img>
-                    <img src={num_0_mines_left}></img>
+                    <img src={num_4_mines_left}></img>
                     <img src={num_0_mines_left}></img>
                 </div>
             </Grid>
             <Grid item xs={4} >
                 <div className="smile">
-                    <img src={smile}></img>
+                    <img src={smile} onClick={restartGame}/>
                 </div>
             </Grid>
             <Grid item xs={4} >
