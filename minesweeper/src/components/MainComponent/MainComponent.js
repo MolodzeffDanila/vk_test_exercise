@@ -2,8 +2,8 @@ import {Grid} from '@mui/material';
 import HeaderOfGame from "../HeaderOfGame/HeaderOfGame"
 import "./MainComponent.css"
 import GameField from "../GameField/GameField"
-import {useEffect, useState} from "react";
-import {generateBombs, startField} from "./MainComponent.helpers";
+import {useEffect, useMemo, useState} from "react";
+import {generateBombs} from "./MainComponent.helpers";
 
 
 
@@ -13,8 +13,18 @@ function MainComponent(){
     const [maskGrid,setMaskGrid] = useState(Array(16).fill(Array(16).fill(1)));
     const [isStarted,setStarted] = useState(false);
     const [isLost, setLost] = useState(false);
-    const [isWon,setWon] = useState(false);
-    const [timer,setTimer] = useState(0)
+    const [timer,setTimer] = useState(0);
+
+    const isWon = useMemo(() => !bombGrid.some(
+            (f, i) => {
+                return f.some((item, j)=>{
+                    return item === -1 && maskGrid[i][j] !== 2 && maskGrid[i][j]!==0
+                })
+            }
+
+        ),
+        [bombGrid, maskGrid],
+    );
 
     return (
         <div className="main-coomponent">
@@ -22,8 +32,12 @@ function MainComponent(){
                 <Grid item xs={12}>
                     <HeaderOfGame
                         isLost={isLost}
+                        setLost={setLost}
                         isWon={isWon}
                         minesLeft={minesLeft}
+                        generateBombs={generateBombs}
+                        setBombGrid={setBombGrid}
+                        setMaskGrid={setMaskGrid}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -34,8 +48,8 @@ function MainComponent(){
                         setMaskGrid={setMaskGrid}
                         isStarted={isStarted}
                         setStarted={setStarted}
+                        isLost={isLost}
                         setLost={setLost}
-                        setWon={setWon}
                         setMinesLeft={setMinesLeft}
                     />
                 </Grid>

@@ -12,20 +12,24 @@ import num_7_mines_left from  "../../sprites/num_7_mines_left.png"
 import num_8_mines_left from  "../../sprites/num_8_mines_left.png"
 import num_9_mines_left from  "../../sprites/num_9_mines_left.png"
 
+import coolSmile from "../../sprites/smile_win.png"
 import smileTouched from "../../sprites/smile_touched.png"
 import smile from "../../sprites/smile.png"
 import deadSmile from  "../../sprites/smile_dead.png"
+import {useEffect, useState} from "react";
+import {generateBombs} from "../MainComponent/MainComponent.helpers";
 
-function HeaderOfGame({isLost,isWon}){
+function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
 
     const restartGame = (event) =>{
-        if(isLost){
-            return
-        }
+        setLost(false)
         event.target.src = smileTouched
         setTimeout(()=>{
             event.target.src = smile
         },100)
+
+        setBombGrid(generateBombs(minesLeft))
+        setMaskGrid(Array(16).fill(Array(16).fill(1)))
     }
 
     return (
@@ -40,7 +44,7 @@ function HeaderOfGame({isLost,isWon}){
             </Grid>
             <Grid item xs={4} >
                 <div className="smile">
-                    <img src={isLost ? deadSmile : smile} onClick={restartGame}/>
+                    <img src={isLost ? deadSmile : isWon ?  coolSmile : smile} onClick={restartGame}/>
                 </div>
             </Grid>
             <Grid item xs={4} >

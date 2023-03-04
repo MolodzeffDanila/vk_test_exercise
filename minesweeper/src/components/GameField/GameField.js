@@ -39,7 +39,7 @@ export const cellMask={
     99: bombTouched
 }
 
-function GameField({bombGrid, maskGrid, setMaskGrid,setWon,setLost,setStarted,isStarted}){
+function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,setStarted,isStarted}){
 
     const showFlag = (event) => {
         event.preventDefault()
@@ -71,7 +71,7 @@ function GameField({bombGrid, maskGrid, setMaskGrid,setWon,setLost,setStarted,is
         let x = Math.floor(+event.target.id /16);
         let y = +event.target.id%16;
 
-        if(maskGrid[x][y]===0){
+        if(maskGrid[x][y]===0 || isLost){
             return;
         }
 
