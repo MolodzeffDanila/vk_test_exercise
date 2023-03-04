@@ -1,3 +1,4 @@
+//Функция подсчета бомб
 export default function countMines(maskGrid){
     return  maskGrid.reduce((sum, val)=>{
          sum+=val.reduce((sumRow,item)=>{

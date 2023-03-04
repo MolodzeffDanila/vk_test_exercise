@@ -18,8 +18,8 @@ import smile from "../../sprites/smile.png"
 import deadSmile from  "../../sprites/smile_dead.png"
 import {useEffect, useState} from "react";
 import {generateBombs} from "../MainComponent/MainComponent.helpers";
-import countMines from "../GameField/GameField.helpers";
 
+//Объект, хранящий цифры и соответствующие им изображения
 const minesCount = {
     0: num_0_mines_left,
     1: num_1_mines_left,
@@ -30,9 +30,10 @@ const minesCount = {
     6: num_6_mines_left,
     7: num_7_mines_left,
     8: num_8_mines_left,
-    9:num_9_mines_left
+    9: num_9_mines_left
 }
 
+//Объект, хранящий смайлики и соответствующие им изображения
 const faces = {
     "dead": deadSmile,
     "smile": smile,
@@ -41,8 +42,32 @@ const faces = {
     "cool": coolSmile
 }
 
-function HeaderOfGame({isLost,isWon,minesLeft,bombGrid,setMaskGrid,setLost,timer,setTimer,setStarted,currentFace,setCurrentFace}){
+//isLost -- проиграл ли
+// isWon -- флаг победа ли
+// minesLeft -- число оставшихся мин
+// bombGrid -- поле(бомбы и цифры вокруг них)
+// setMaskGrid -- функция смены массива отображаемых клеток
+// setLost -- функция смены флага поражения
+// timer -- показатель таймера
+// setTimer -- функция изменения состояния таймера
+// setStarted  -- функция для смены флага начала игры
+// currentFace -- значение текущего выбранного смайлика
+// setCurrentFace -- функция изменения состояния смайлика
 
+function HeaderOfGame({isLost,
+                          isWon,
+                          minesLeft,
+                          bombGrid,
+                          setMaskGrid,
+                          setLost,
+                          timer,
+                          setTimer,
+                          setStarted,
+                          currentFace,
+                          setCurrentFace
+}){
+
+    //обработка смены смайлика при победе или поражении
     useEffect(()=>{
         if(isLost){
             setCurrentFace("dead")
@@ -51,16 +76,18 @@ function HeaderOfGame({isLost,isWon,minesLeft,bombGrid,setMaskGrid,setLost,timer
         }
     },[isLost,isWon])
 
-    //const backspaceLongPress = useLongPress(showSuprisedFace, 100);
-
+    //рестарт игры при нажатии на смайлик
     const restartGame = (event) =>{
         setLost(false)
+        //смайлик на 0.1 секунды становится нажатым, потом становится в стандартное положение
         event.target.src = smileTouched
         setTimeout(()=>{
             event.target.src = smile
         },100)
+        //обновление таймера
         setTimer(0)
         setStarted(false)
+        //генерация поля и сброс маски
         bombGrid.current = generateBombs(40)
         setMaskGrid(Array(16).fill(Array(16).fill(1)))
     }
