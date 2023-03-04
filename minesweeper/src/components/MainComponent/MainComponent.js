@@ -15,6 +15,10 @@ function MainComponent(){
     const [isLost, setLost] = useState(false);
     const [timer,setTimer] = useState(0);
 
+    useEffect(()=>{
+        setMinesLeft(40)
+    },[isLost])
+
     const isWon = useMemo(() => !bombGrid.some(
             (f, i) => {
                 return f.some((item, j)=>{

@@ -18,6 +18,7 @@ import smile from "../../sprites/smile.png"
 import deadSmile from  "../../sprites/smile_dead.png"
 import {useEffect, useState} from "react";
 import {generateBombs} from "../MainComponent/MainComponent.helpers";
+import countMines from "../GameField/GameField.helpers";
 
 const minesCount = {
     0: num_0_mines_left,
@@ -42,7 +43,7 @@ function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
             event.target.src = smile
         },100)
 
-        setBombGrid(generateBombs(minesLeft))
+        setBombGrid(generateBombs(40))
         setMaskGrid(Array(16).fill(Array(16).fill(1)))
     }
 
