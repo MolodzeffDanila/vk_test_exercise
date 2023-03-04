@@ -20,6 +20,7 @@ import flag from "../../sprites/cell_flag.png"
 import question from  "../../sprites/cell_question.png"
 
 import countMines from "./GameField.helpers"
+import {generateBombs} from "../MainComponent/MainComponent.helpers";
 
 const cells = {
     0: cellTouched,
@@ -41,7 +42,17 @@ export const cellMask={
     99: bombTouched
 }
 
-function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,setMinesLeft}){
+function GameField({bombGrid,
+                       maskGrid,
+                       setMaskGrid,
+                       isLost,
+                       setLost,
+                       minesLeft,
+                       setMinesLeft,
+                       isStarted,
+                       setStarted,
+                       isWon,
+                       generateBombs}){
 
     const showFlag = (event) => {
         event.preventDefault()
@@ -50,7 +61,7 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,set
         let x = Math.floor(+event.target.id /16);
         let y = +event.target.id%16;
 
-        if(maskGrid[x][y]===0 || isLost){
+        if(maskGrid[x][y]===0 || isLost || isWon){
             return;
         }
 
@@ -70,20 +81,27 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,set
 
     }
 
-    const showBomb = (event) => {
 
+    const showBomb = (event) => {
         let x = Math.floor(+event.target.id /16);
         let y = +event.target.id%16;
-        if(maskGrid[x][y]!==1 || isLost){
+
+        if(!isStarted && !isLost){
+            setStarted(true);
+            bombGrid.current = generateBombs(minesLeft,x,y)
+            setMaskGrid(Array(16).fill(Array(16).fill(1)))
+        }
+
+        if(maskGrid[x][y]!==1 || isLost || isWon){
             return;
         }
 
         let newMask = [];
-        if(bombGrid[x][y]===-1){
-            for(let i=0;i<bombGrid.length;i++){
+        if(bombGrid.current[x][y]===-1){
+            for(let i=0;i<bombGrid.current.length;i++){
                 let tmp = []
-                for(let j=0;j<bombGrid.length;j++){
-                    if(bombGrid[i][j]===-1 || maskGrid[i][j]===0){
+                for(let j=0;j<bombGrid.current.length;j++){
+                    if(bombGrid.current[i][j]===-1 || maskGrid[i][j]===0){
                         tmp.push(0)
                     }else{
                         tmp.push(maskGrid[i][j])
@@ -93,7 +111,8 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,set
             }
             newMask[x][y] = 99
             setMaskGrid(newMask)
-            setLost(true)
+            setLost(true);
+            setStarted(false);
             return;
         }
 
@@ -112,7 +131,7 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,set
         while (clearingStack.length){
             const [x,y] = clearingStack.pop();
             newMask[x][y] = 0;
-            if(bombGrid[x][y]===0){
+            if(bombGrid.current[x][y]===0){
                 clear(x-1,y);
                 clear(x+1,y);
                 clear(x,y-1);
@@ -126,14 +145,17 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,set
     const redrawField = () =>{
         return (
             <div className="field">
-                {bombGrid.map((row, i) => {
+                {maskGrid.map((row, i) => {
                     return(
                         <div key={i} className="row">
                             {row.map((val, j) => {
-                                let cell = cells[+val];
+                                let cell;
                                 if(maskGrid[i][j]){
                                     cell = cellMask[maskGrid[i][j]]
+                                }else{
+                                    cell = cells[bombGrid.current[i][j]]
                                 }
+
                                 return (
                                     <div style={
                                         {
@@ -142,7 +164,9 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,set
                                             height: "16px",
                                             display: "inline-block"
                                         }
-                                    } id={i*16 + j} className="cell" onClick={showBomb} onContextMenu={showFlag}>
+                                    } id={i*16 + j} className="cell"
+                                         onClick={showBomb}
+                                         onContextMenu={showFlag}>
                                     </div>
                                 )
                             })}

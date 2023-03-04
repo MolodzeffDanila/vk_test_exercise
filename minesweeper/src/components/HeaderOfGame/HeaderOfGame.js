@@ -34,7 +34,7 @@ const minesCount = {
 }
 
 
-function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
+function HeaderOfGame({isLost,isWon,minesLeft,bombGrid,setMaskGrid,setLost,timer,setTimer,setStarted}){
 
     const restartGame = (event) =>{
         setLost(false)
@@ -42,8 +42,9 @@ function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
         setTimeout(()=>{
             event.target.src = smile
         },100)
-
-        setBombGrid(generateBombs(40))
+        setTimer(0)
+        setStarted(false)
+        bombGrid.current = generateBombs(40)
         setMaskGrid(Array(16).fill(Array(16).fill(1)))
     }
 
@@ -64,9 +65,9 @@ function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
             </Grid>
             <Grid item xs={4} >
                 <div className="timer">
-                    <img src={num_0_mines_left}></img>
-                    <img src={num_0_mines_left}></img>
-                    <img src={num_0_mines_left}></img>
+                    <img src={minesCount[Math.floor(timer/100)]}></img>
+                    <img src={minesCount[Math.floor(timer%100 / 10)]}></img>
+                    <img src={minesCount[Math.floor(timer%10)]}></img>
                 </div>
             </Grid>
         </Grid>

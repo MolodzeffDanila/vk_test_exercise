@@ -1,4 +1,4 @@
-export function generateBombs(mines){
+export function generateBombs(mines,xClick=-1,yClick=-1){
     let field = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -30,7 +30,7 @@ export function generateBombs(mines){
         const x = Math.floor(Math.random() * 16);
         const y = Math.floor(Math.random() * 16);
 
-        if (field[y][x] === -1) continue;
+        if (field[y][x] === -1 || (y===xClick && x===yClick)) continue;
 
         field[y][x] = -1;
 
