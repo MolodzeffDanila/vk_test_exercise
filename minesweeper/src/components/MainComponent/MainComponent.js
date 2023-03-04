@@ -11,6 +11,7 @@ function MainComponent(){
     const [isStarted,setStarted] = useState(false);
     const [isLost, setLost] = useState(false);
     const [timer,setTimer] = useState(0);
+    const [currentFace,setCurrentFace] = useState("smile")
 
     const bombGrid = useRef([]);
 
@@ -61,6 +62,8 @@ function MainComponent(){
                         setTimer={setTimer}
                         setMaskGrid={setMaskGrid}
                         setStarted={setStarted}
+                        currentFace={currentFace}
+                        setCurrentFace={setCurrentFace}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -76,6 +79,7 @@ function MainComponent(){
                         minesLeft={minesLeft}
                         setMinesLeft={setMinesLeft}
                         generateBombs={generateBombs}
+                        setCurrentFace={setCurrentFace}
                     />
                 </Grid>
             </>

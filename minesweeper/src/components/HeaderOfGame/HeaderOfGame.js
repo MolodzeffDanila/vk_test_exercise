@@ -11,7 +11,7 @@ import num_6_mines_left from  "../../sprites/num_6_mines_left.png"
 import num_7_mines_left from  "../../sprites/num_7_mines_left.png"
 import num_8_mines_left from  "../../sprites/num_8_mines_left.png"
 import num_9_mines_left from  "../../sprites/num_9_mines_left.png"
-
+import suprisedFace from "../../sprites/smile_surprised.png"
 import coolSmile from "../../sprites/smile_win.png"
 import smileTouched from "../../sprites/smile_touched.png"
 import smile from "../../sprites/smile.png"
@@ -33,8 +33,25 @@ const minesCount = {
     9:num_9_mines_left
 }
 
+const faces = {
+    "dead": deadSmile,
+    "smile": smile,
+    "touched":smileTouched,
+    "surprised": suprisedFace,
+    "cool": coolSmile
+}
 
-function HeaderOfGame({isLost,isWon,minesLeft,bombGrid,setMaskGrid,setLost,timer,setTimer,setStarted}){
+function HeaderOfGame({isLost,isWon,minesLeft,bombGrid,setMaskGrid,setLost,timer,setTimer,setStarted,currentFace,setCurrentFace}){
+
+    useEffect(()=>{
+        if(isLost){
+            setCurrentFace("dead")
+        }else if(isWon){
+            setCurrentFace("cool")
+        }
+    },[isLost,isWon])
+
+    //const backspaceLongPress = useLongPress(showSuprisedFace, 100);
 
     const restartGame = (event) =>{
         setLost(false)
@@ -60,7 +77,7 @@ function HeaderOfGame({isLost,isWon,minesLeft,bombGrid,setMaskGrid,setLost,timer
             </Grid>
             <Grid item xs={4} >
                 <div className="smile">
-                    <img src={isLost ? deadSmile : isWon ?  coolSmile : smile} onClick={restartGame}/>
+                    <img src={faces[currentFace]} onClick={restartGame}/>
                 </div>
             </Grid>
             <Grid item xs={4} >

@@ -1,5 +1,4 @@
 import "./GameOfField.css"
-import {useState, useEffect} from "react"
 
 import cellTouched from "../../sprites/cell_touched.png"
 import num_0_cell from  "../../sprites/cell.png"
@@ -12,7 +11,6 @@ import num_6_cell from  "../../sprites/cell_6.png"
 import num_7_cell from  "../../sprites/cell_7.png"
 import num_8_cell from  "../../sprites/cell_8.png"
 
-
 import bomb from "../../sprites/bomb.png"
 import bombTouched from "../../sprites/bomb_exploaded.png"
 
@@ -20,7 +18,7 @@ import flag from "../../sprites/cell_flag.png"
 import question from  "../../sprites/cell_question.png"
 
 import countMines from "./GameField.helpers"
-import {generateBombs} from "../MainComponent/MainComponent.helpers";
+import useLongPress from "./GameField.hooks"
 
 const cells = {
     0: cellTouched,
@@ -52,7 +50,10 @@ function GameField({bombGrid,
                        isStarted,
                        setStarted,
                        isWon,
-                       generateBombs}){
+                       generateBombs,
+                       setCurrentFace}){
+
+
 
     const showFlag = (event) => {
         event.preventDefault()
@@ -81,6 +82,11 @@ function GameField({bombGrid,
 
     }
 
+    const showSuprisedFace = () =>{
+        setCurrentFace("surprised")
+    }
+
+    const backspaceLongPress = useLongPress(showSuprisedFace, 300);
 
     const showBomb = (event) => {
         let x = Math.floor(+event.target.id /16);
@@ -138,6 +144,7 @@ function GameField({bombGrid,
                 clear(x,y+1);
             }
         }
+        setCurrentFace("smile")
         setMinesLeft(40 - countMines(newMask))
         setMaskGrid(newMask)
     }
@@ -166,7 +173,8 @@ function GameField({bombGrid,
                                         }
                                     } id={i*16 + j} className="cell"
                                          onClick={showBomb}
-                                         onContextMenu={showFlag}>
+                                         onContextMenu={showFlag}
+                                         {...backspaceLongPress}>
                                     </div>
                                 )
                             })}
