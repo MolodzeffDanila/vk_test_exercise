@@ -19,6 +19,8 @@ import bombTouched from "../../sprites/bomb_exploaded.png"
 import flag from "../../sprites/cell_flag.png"
 import question from  "../../sprites/cell_question.png"
 
+import countMines from "./GameField.helpers"
+
 const cells = {
     0: cellTouched,
     1: num_1_cell,
@@ -39,7 +41,7 @@ export const cellMask={
     99: bombTouched
 }
 
-function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,setStarted,isStarted}){
+function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,minesLeft,setMinesLeft}){
 
     const showFlag = (event) => {
         event.preventDefault()
@@ -48,7 +50,7 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,setStarted,is
         let x = Math.floor(+event.target.id /16);
         let y = +event.target.id%16;
 
-        if(maskGrid[x][y]===0){
+        if(maskGrid[x][y]===0 || isLost){
             return;
         }
 
@@ -56,22 +58,23 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,setStarted,is
         for(let i=0;i<maskGrid.length;i++){
             newMask.push(Object.assign([], maskGrid[i]))
         }
-        if(maskGrid[x][y]===1){
+        if(maskGrid[x][y]===1 && minesLeft>0){
             newMask[x][y] = 2
         }else if(maskGrid[x][y]===2){
             newMask[x][y] = 3
         }else if(maskGrid[x][y]===3){
             newMask[x][y] = 1
         }
+        setMinesLeft(40 - countMines(newMask))
         setMaskGrid(newMask)
 
     }
 
     const showBomb = (event) => {
+
         let x = Math.floor(+event.target.id /16);
         let y = +event.target.id%16;
-
-        if(maskGrid[x][y]===0 || isLost){
+        if(maskGrid[x][y]!==1 || isLost){
             return;
         }
 
@@ -116,6 +119,7 @@ function GameField({bombGrid, maskGrid, setMaskGrid,isLost,setLost,setStarted,is
                 clear(x,y+1);
             }
         }
+        setMinesLeft(40 - countMines(newMask))
         setMaskGrid(newMask)
     }
 

@@ -19,6 +19,20 @@ import deadSmile from  "../../sprites/smile_dead.png"
 import {useEffect, useState} from "react";
 import {generateBombs} from "../MainComponent/MainComponent.helpers";
 
+const minesCount = {
+    0: num_0_mines_left,
+    1: num_1_mines_left,
+    2: num_2_mines_left,
+    3: num_3_mines_left,
+    4: num_4_mines_left,
+    5: num_5_mines_left,
+    6: num_6_mines_left,
+    7: num_7_mines_left,
+    8: num_8_mines_left,
+    9:num_9_mines_left
+}
+
+
 function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
 
     const restartGame = (event) =>{
@@ -37,9 +51,9 @@ function HeaderOfGame({isLost,isWon,minesLeft,setBombGrid,setMaskGrid,setLost}){
         <Grid container spacing={5}>
             <Grid item xs={4}>
                 <div className="mines">
-                    <img src={num_0_mines_left}></img>
-                    <img src={num_4_mines_left}></img>
-                    <img src={num_0_mines_left}></img>
+                    <img src={minesCount[Math.floor(minesLeft/100)]}></img>
+                    <img src={minesCount[Math.floor(minesLeft%100 / 10)]}></img>
+                    <img src={minesCount[Math.floor(minesLeft%10)]}></img>
                 </div>
             </Grid>
             <Grid item xs={4} >

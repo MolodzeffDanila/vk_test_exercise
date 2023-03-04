@@ -50,6 +50,7 @@ function MainComponent(){
                         setStarted={setStarted}
                         isLost={isLost}
                         setLost={setLost}
+                        minesLeft={minesLeft}
                         setMinesLeft={setMinesLeft}
                     />
                 </Grid>
