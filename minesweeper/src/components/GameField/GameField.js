@@ -11,7 +11,11 @@ import num_5_cell from  "../../sprites/cell_5.png"
 import num_6_cell from  "../../sprites/cell_6.png"
 import num_7_cell from  "../../sprites/cell_7.png"
 import num_8_cell from  "../../sprites/cell_8.png"
+
+
 import bomb from "../../sprites/bomb.png"
+import bombTouched from "../../sprites/bomb_exploaded.png"
+
 import flag from "../../sprites/cell_flag.png"
 import question from  "../../sprites/cell_question.png"
 
@@ -31,20 +35,65 @@ const cells = {
 export const cellMask={
     1: num_0_cell,
     2: flag,
-    3: question
+    3: question,
+    99: bombTouched
 }
 
-function GameField({bombGrid,setBombGrid, maskGrid, setMaskGrid}){
+function GameField({bombGrid, maskGrid, setMaskGrid,setWon,setLost,setStarted,isStarted}){
+
+    const showFlag = (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+
+        let x = Math.floor(+event.target.id /16);
+        let y = +event.target.id%16;
+
+        if(maskGrid[x][y]===0){
+            return;
+        }
+
+        let newMask = [];
+        for(let i=0;i<maskGrid.length;i++){
+            newMask.push(Object.assign([], maskGrid[i]))
+        }
+        if(maskGrid[x][y]===1){
+            newMask[x][y] = 2
+        }else if(maskGrid[x][y]===2){
+            newMask[x][y] = 3
+        }else if(maskGrid[x][y]===3){
+            newMask[x][y] = 1
+        }
+        setMaskGrid(newMask)
+
+    }
 
     const showBomb = (event) => {
         let x = Math.floor(+event.target.id /16);
         let y = +event.target.id%16;
 
         if(maskGrid[x][y]===0){
-            return
+            return;
         }
 
         let newMask = [];
+        if(bombGrid[x][y]===-1){
+            for(let i=0;i<bombGrid.length;i++){
+                let tmp = []
+                for(let j=0;j<bombGrid.length;j++){
+                    if(bombGrid[i][j]===-1 || maskGrid[i][j]===0){
+                        tmp.push(0)
+                    }else{
+                        tmp.push(maskGrid[i][j])
+                    }
+                }
+                newMask.push(tmp)
+            }
+            newMask[x][y] = 99
+            setMaskGrid(newMask)
+            setLost(true)
+            return;
+        }
+
         for(let i=0;i<maskGrid.length;i++){
             newMask.push(Object.assign([], maskGrid[i]))
         }
@@ -52,15 +101,12 @@ function GameField({bombGrid,setBombGrid, maskGrid, setMaskGrid}){
         let clearingStack = [];
 
         function clear(x,y){
-            console.log(newMask[x][y])
-            console.log(newMask)
             if (x >= 0 && x < 16 && y >= 0 && y < 16 && newMask[x][y]) {
                 clearingStack.push([x,y])
             }
         }
         clear(x,y);
         while (clearingStack.length){
-            console.log(clearingStack)
             const [x,y] = clearingStack.pop();
             newMask[x][y] = 0;
             if(bombGrid[x][y]===0){
@@ -92,7 +138,7 @@ function GameField({bombGrid,setBombGrid, maskGrid, setMaskGrid}){
                                             height: "16px",
                                             display: "inline-block"
                                         }
-                                    } id={i*16 + j} className="cell" onClick={showBomb}>
+                                    } id={i*16 + j} className="cell" onClick={showBomb} onContextMenu={showFlag}>
                                     </div>
                                 )
                             })}
@@ -112,3 +158,4 @@ function GameField({bombGrid,setBombGrid, maskGrid, setMaskGrid}){
 }
 
 export default GameField;
+

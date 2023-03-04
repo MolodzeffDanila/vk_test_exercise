@@ -14,10 +14,14 @@ import num_9_mines_left from  "../../sprites/num_9_mines_left.png"
 
 import smileTouched from "../../sprites/smile_touched.png"
 import smile from "../../sprites/smile.png"
+import deadSmile from  "../../sprites/smile_dead.png"
 
-function HeaderOfGame(){
+function HeaderOfGame({isLost,isWon}){
 
     const restartGame = (event) =>{
+        if(isLost){
+            return
+        }
         event.target.src = smileTouched
         setTimeout(()=>{
             event.target.src = smile
@@ -36,7 +40,7 @@ function HeaderOfGame(){
             </Grid>
             <Grid item xs={4} >
                 <div className="smile">
-                    <img src={smile} onClick={restartGame}/>
+                    <img src={isLost ? deadSmile : smile} onClick={restartGame}/>
                 </div>
             </Grid>
             <Grid item xs={4} >
