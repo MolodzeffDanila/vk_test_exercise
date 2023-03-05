@@ -4,6 +4,7 @@
 }
 
 .field{
+    width: 256px;
     background-color: #bbbbbb;
     border: 4mm ridge rgba(200, 200, 200, 0.6);
 }
