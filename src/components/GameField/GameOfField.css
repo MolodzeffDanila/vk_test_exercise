@@ -1,0 +1,9 @@
+
+.row{
+    height: 16px;
+}
+
+.field{
+    background-color: #bbbbbb;
+    border: 4mm ridge rgba(200, 200, 200, 0.6);
+}
