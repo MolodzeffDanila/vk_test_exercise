@@ -39,7 +39,6 @@ function MainComponent(){
         }
     },[timer])
 
-    //Простите меня еще раз
     const isWon = useMemo(() => {
         //Простите меня, пожалуйста, таких костылей больше не повторится
         if(!isStarted){

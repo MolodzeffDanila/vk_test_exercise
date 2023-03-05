@@ -98,16 +98,6 @@ function GameField({bombGrid,
 
     //обработка долгого нажатия
     const backspaceLongPress = useLongPress((event)=>{
-        /*let x = Math.floor(+event.target.id /16);
-        let y = +event.target.id%16;
-
-
-        let newMask = [];
-        for(let i=0;i<maskGrid.length;i++){
-            newMask.push(Object.assign([], maskGrid[i]))
-        }
-        newMask[x][y] = 4
-        setMaskGrid(newMask)*/
 
         setCurrentFace("surprised")
     }, 150);
