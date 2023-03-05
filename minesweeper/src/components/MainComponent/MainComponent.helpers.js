@@ -1,4 +1,4 @@
-export function generateBombs(mines){
+export function generateBombs(mines,xClick=-1,yClick=-1){
     let field = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -16,26 +16,28 @@ export function generateBombs(mines){
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     ]
-
+    //функция для инкремента количества граничащих бомб
     function inc(x, y) {
         if (x >= 0 && x < 16 && y >= 0 && y < 16) {
             if (field[y][x] === -1) return;
-
             field[y][x] += 1;
         }
     }
 
     let i = 0;
-    while(i<mines){
+    //генерация бомб
+    while(i < mines){
         const x = Math.floor(Math.random() * 16);
         const y = Math.floor(Math.random() * 16);
 
-        if (field[y][x] === -1) continue;
+        //избегаем постановки бомбы в переданных координатах, а так же в клетку, куда уже поставлена бомба
+        if (field[y][x] === -1 || (y===xClick && x===yClick)) continue;
 
         field[y][x] = -1;
 
         i += 1;
 
+        //вокруг увелиичиваем счетчик бомб
         inc(x + 1, y);
         inc(x - 1, y);
         inc(x, y + 1);
