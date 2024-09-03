@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS build
 LABEL authors="Danila"
 
 RUN apt-get update && apt-get install curl
@@ -12,7 +12,10 @@ COPY package*.json .
 RUN npm install
 
 COPY /src .
-COPY /nginx .
 COPY /public .
 
-CMD ["npm", "run", "build"]
+RUN npm run build
+
+FROM nginx:1.21.0-alpine
+
+COPY --from=build /app/build /var/www/build
