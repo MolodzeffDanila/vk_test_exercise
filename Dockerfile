@@ -4,8 +4,7 @@ LABEL authors="Danila"
 WORKDIR /app
 COPY package*.json .
 
-COPY /src .
-COPY /public .
+COPY . .
 
 RUN npm install
 
