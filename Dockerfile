@@ -10,4 +10,4 @@ RUN npm install
 
 RUN ls
 
-RUN npm run start
+CMD [ "npm","run","start" ]
