@@ -20,6 +20,7 @@ function MainComponent(){
     //Ref ссылка на поле с бомбами и цифрами вокруг бомб
     const bombGrid = useRef([]);
 
+
     //Хук для старта таймера
     useEffect(()=>{
         if(isStarted){
